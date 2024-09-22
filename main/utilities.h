@@ -6,8 +6,8 @@
 
 
 namespace InputSystem {
-  enum InsertMode { Back, Front, OneValue, SeveralValues,All};
-  enum InsertMode_Remove{Value,Position};
+  enum InsertMode { Back, Front, OneValue, SeveralValues, All };
+  enum InsertMode_Remove { Value, Position };
   template <typename T>
   T* insert(size_t& n, size_t& pos, InputSystem::InsertMode& mode) noexcept {
     T* value = nullptr;
@@ -102,8 +102,8 @@ namespace InputSystem {
         std::cin >> pos;
       }
     }
-    
-    
+
+
     if (user_2 == 1) {
       mode_2 = Value;
       std::cout << "Choose remove mode:\n";
@@ -120,7 +120,7 @@ namespace InputSystem {
         value = new T[n];
         std::cout << "Input value for remove: ";
         std::cin >> value[0];
-      
+
       }if (mode == All) {
         n = 1;
         value = new T[n];
@@ -165,13 +165,13 @@ namespace OutputSystem {
   void show(const TArchive<T>& archive) noexcept {
     std::cout << "Archive: { ";
     archive.print();
-   /* if (!archive.empty()) {
-      
-      int column, line;
-      getCursor(column, line);
-      column -= 2;
-      setCursor(column, line);
-    }*/
+    /* if (!archive.empty()) {
+
+       int column, line;
+       getCursor(column, line);
+       column -= 2;
+       setCursor(column, line);
+     }*/
     std::cout << " }\n";
   }
 }

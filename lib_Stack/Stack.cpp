@@ -5,7 +5,6 @@ using namespace std;
 // Define the default capacity of the stack 
 #define SIZE 10 
 
-// A class to represent a stack 
 class Stack
 {
   int* arr;

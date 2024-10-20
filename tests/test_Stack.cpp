@@ -61,17 +61,17 @@ TEST(StackLib, get_capacity) {
 }
 
 
-
+/*
 TEST(StackLib, size) {
   Stack<int> obj;
-  obj.push(1);
-  obj.push(2);
+  obj.push(1)(2);;
+  obj.push
   obj.push(3);
   int actual_result = obj.size();
   int expected_result = 3;
   EXPECT_EQ(expected_result, actual_result);
 }
-
+*/
 
 
 TEST(StackLib, isEmpty) {

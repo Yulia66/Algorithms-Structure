@@ -123,6 +123,7 @@ int main() {
     std::cerr << "Error in void pop_back(): " << error.what() << std::endl;
   }*/
   list.print();
+  std::cout << list.find(155)->value();
   //std::cout<< list.get_tail()->_value; 
   //std::cout << list.get_size(); 
   return 0;

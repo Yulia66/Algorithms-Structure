@@ -390,26 +390,25 @@ size_t TArchive<T>::Required_IndexBack(int index) {
       count--;
     }
 
-    return count;
+   
   }
-  else {
-    return count;
-  }
+  return count;
 }
+
+
+
+
 
 
 template <typename T>
 size_t TArchive<T>::size_withoutTail() {
   int count = 0;
-  for (int i = _size + _deleted - 1; i > -1; i--) {
-    if (_data[i] == NULL) {
-      continue;
-    }
-    else {
+  for (int i = _size + _deleted - 1; _states[i] == State::deleted; i--) {
+
       count++;
-    }
+    
   }
-  return count;
+  return _size + _deleted-count;
 }
 
 template <typename T>
@@ -434,7 +433,7 @@ void TArchive<T>::pop_front() {
 template <typename T>
 void TArchive<T>::push_back(T value) {
   int count = size_withoutTail();
-  if (_size < _capacity) {
+  if (_size+_deleted < _capacity) {
     if (_states[count] == State::deleted) {
       _deleted--;
       _data[count] = value;
@@ -449,7 +448,7 @@ void TArchive<T>::push_back(T value) {
       _size++;
 
     }
-  }if (_size >= _capacity) {
+  }if (_size+_deleted >= _capacity) {
     throw std::logic_error("Error in function \
 \"void TArchive<T>::push_back(T value)\": no place to insert!");
   }
@@ -598,8 +597,8 @@ inline bool TArchive<T>::full() const noexcept {
 
 template <typename T>
 TArchive<T>& TArchive<T>::insert(const T* arr, size_t n, size_t pos) {
-  pos = Required_IndexFront(pos);
-  if (_size == 0 && pos > this->size_withoutTail()) {
+ int  real_pos = Required_IndexFront(pos);
+  if (_size == 0 && real_pos > this->size_withoutTail()) {
     for (int i = 0; i < n; i++) {
       _data[i] = arr[i];
       _states[i] = State::busy;
@@ -621,7 +620,7 @@ TArchive<T>& TArchive<T>::insert(const T* arr, size_t n, size_t pos) {
 
 
   if (this->size_withoutTail() >= pos) {
-    pos = this->Required_IndexFront(pos);
+    real_pos = this->Required_IndexFront(pos);
     if (this->full()) {
       int t;
       std::cout << "There is not enough space. Enlarge the archive";
@@ -631,16 +630,16 @@ TArchive<T>& TArchive<T>::insert(const T* arr, size_t n, size_t pos) {
     else {
       T* new_data = new T[_capacity];
       State* new_states = new State[_capacity];
-      for (int i = 0; i < pos; i++) {
+      for (int i = 0; i < real_pos; i++) {
         new_data[i] = _data[i];
         new_states[i] = _states[i];
-      }for (int i = pos - 1, j = 0; i != n + (pos - 1); i++, j++) {
+      }for (int i = real_pos - 1, j = 0; i != n + (real_pos - 1); i++, j++) {
         new_states[i] = State::busy;
         new_data[i] = arr[j];
         _size++;
       }
 
-      for (int j = pos + n - 1, i = pos; j < _size + _deleted; j++, i++) {
+      for (int j = real_pos + n - 1, i = real_pos; j < _size + _deleted; j++, i++) {
         new_data[j] = _data[i - 1];
         new_states[j] = _states[i - 1];
       }
@@ -666,21 +665,21 @@ TArchive<T>& TArchive<T>::insert(const T* arr, size_t n, size_t pos) {
 
 template <typename T>
 TArchive<T>& TArchive<T>::insert(T value, size_t pos) {
-  pos = this->Required_IndexFront(pos);
-  if (_size == 0 && pos > this->size_withoutTail()) {
-    _data[pos - 1] = value;
+  int real_pos = this->Required_IndexFront(pos);
+  if (_size == 0 && real_pos > this->size_withoutTail()) {
+    _data[real_pos - 1] = value;
     _size++;
     if (this->check()) {
       this->sort();
     }
     return *this;
   }
-  if (this->size_withoutTail() < pos) {
+  if (this->size_withoutTail() < real_pos) {
     throw std::logic_error("Error in function \
 \"TArchive<T>& insert(T value, size_t pos)\": wrong position value.");
     return *this;
   }
-  if (this->size_withoutTail() >= pos) {
+  if (this->size_withoutTail() >= real_pos) {
     if (this->full()) {
       int n;
       std::cout << "There is not enough space. Enlarge the archive";
@@ -690,14 +689,14 @@ TArchive<T>& TArchive<T>::insert(T value, size_t pos) {
     else {
       T* new_data = new T[_capacity];
       State* new_states = new State[_capacity];
-      for (int i = 0; i < pos; i++) {
+      for (int i = 0; i < real_pos; i++) {
         new_data[i] = _data[i];
         new_states[i] = _states[i];
       }
-      new_states[pos - 1] = State::busy;
-      new_data[pos - 1] = value;
+      new_states[real_pos - 1] = State::busy;
+      new_data[real_pos - 1] = value;
       _size++;
-      for (int j = pos; j < _size + _deleted; j++) {
+      for (int j = real_pos; j < _size + _deleted; j++) {
         new_data[j] = _data[j - 1];
         new_states[j] = _states[j - 1];
       }
@@ -748,26 +747,21 @@ TArchive<T>& TArchive<T>::remove_by_index(size_t pos) {
 
 template <typename T>
 TArchive<T>& TArchive<T>::erase(size_t pos, size_t n) {
-  //pos = this->Required_IndexFront(pos);
+  int real_pos = this->Required_IndexFront(pos);
   /*if (pos > _size || _size == 0 || n>_size) {
     throw std::logic_error("Error in function \
 \"TArchive<T>& remove_by_index(size_t pos)\": wrong position value.");
     return *this;
   }if (pos <= _size) {*/
 
-  if (_data[pos - 1] == NULL) {
-    while (_data[pos - 1] == NULL) {
-      pos++;
-    }
 
-  }
   T* new_data = new T[_capacity];
   State* new_states = new State[_capacity];
   int countNULL = 0;
-  for (int i = 0; i < pos; i++) {
+  for (int i = 0; i < real_pos; i++) {
     new_data[i] = _data[i];
     new_states[i] = _states[i];
-  }for (int i = pos - 1; countNULL != n; i++) {
+  }for (int i = real_pos - 1; countNULL != n; i++) {
     if (_data[i] == NULL) {
       new_states[i] = State::deleted;
       new_data[i] = NULL;
@@ -782,7 +776,7 @@ TArchive<T>& TArchive<T>::erase(size_t pos, size_t n) {
     }
   }
 
-  for (int j = pos + n - 1; j < _size + _deleted; j++) {
+  for (int j = real_pos + n - 1; j < _size + _deleted; j++) {
     new_data[j] = _data[j];
     new_states[j] = _states[j];
   }
@@ -811,7 +805,10 @@ size_t* TArchive<T>::find_all(T value) const noexcept {
 template <typename T>
 void TArchive<T>::print() const noexcept {
   for (size_t i = 0; i < _size + _deleted; i++) {
-    if (_data[i] != NULL) {
+    if (_data[i] == NULL) {
+      std::cout << "null" << ", ";
+    }
+    else {
       std::cout << _data[i] << ", ";
     }
   }

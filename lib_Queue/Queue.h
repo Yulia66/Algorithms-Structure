@@ -26,8 +26,12 @@ public:
   }
  
 
+
+  
+
+
   bool isFull() {
-    if (front == 0 && ends == SIZE - 1) {
+    if ((front == 0 && ends == SIZE - 1)){
       return true;
     }
     return false;
@@ -41,6 +45,12 @@ public:
   }
 
   void add_element(int element) {
+    if (ends == SIZE - 1 && front != 0) {
+      ends = 0;
+      items[ends] = element;
+      ends++;
+    }
+
     if (isFull()) {
       throw std::logic_error("The queue is full!!!\n");
     }

@@ -1,6 +1,47 @@
-// Copyright 2024 Marina Usova
+#define ITERATOR
 
-#define QUEUE
+#ifdef ITERATOR
+#include <iostream>
+#include "../lib_Iterator/Iterator.h"
+int main() {
+  TList<int>list;
+  list.push_back(3);
+  list.push_back(36);
+  list.push_back(30);
+  for (auto it = list.begin(); it != list.end(); ++it) {
+    std::cout << *it;
+  }
+  return 0;
+}
+#endif
+
+#ifdef STACKONLIST
+
+
+#include <iostream>
+#include "../lib_StackOnList/StackOnList.h"
+
+int main() {
+  StackOnList<int> list;
+  list.push(3);
+  list.push(36);
+  list.push(30);
+  list.pop();
+  list.pop();
+ //list.pop();
+  try {
+    std::cout << list.top();
+    
+  }
+  catch (const std::logic_error& error) {
+
+    std::cerr << error.what() << std::endl;
+
+  }
+
+  return 0;
+}
+#endif
 
 #ifdef QUEUE
 #include "../lib_Queue/Queue.h"

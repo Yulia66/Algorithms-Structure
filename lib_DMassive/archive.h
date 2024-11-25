@@ -331,12 +331,12 @@ void TArchive<T>::reserve(size_t n) {
 template <typename T>
 TArchive<T>& TArchive<T>::sort() {
   int index = 0;
-  int nulling = 0;
+  // nulling = 0;
   T* new_data = new T[_capacity];
   State* new_states = new State[_capacity];
   for (int i = 0; i < _size + _deleted; i++) {
     if (_data[i] == NULL) {
-      nulling++;
+     // nulling++;
       continue;
     }
     else {

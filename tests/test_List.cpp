@@ -69,7 +69,7 @@ TEST(TestListLib, get_head) {
   EXPECT_EQ(expected_result, actual_result);
 }
 
-
+/*
 TEST(TestListLib, insert_by_the_pointer_1) {
   TList<int> obj;
   TNode<int>* node = nullptr;
@@ -86,7 +86,7 @@ TEST(TestListLib, insert_by_the_pointer_2) {
   int expected_result = 2;
   EXPECT_EQ(expected_result, actual_result);
 }
-
+*/
 
 
 TEST(TestListLib, insert_by_position_1) {

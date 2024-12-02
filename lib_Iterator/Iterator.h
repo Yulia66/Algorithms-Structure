@@ -88,18 +88,24 @@ public:
       _node = nullptr;
       _list = nullptr;
     }
-    Iterator(const TList<T>* list, TNode<T>* node) {
-      _node = list;
+    Iterator( TList<T>* list, TNode<T>* node) {
+      _list = list;
       _node = node;
     }
     bool operator==(Iterator& iterator) {
       if (_list == iterator._list && _node == iterator._node) {
-        return *true;
+        return true;
+      }
+      else {
+        return false;
+
       }
     }
     
     bool operator!=(Iterator& iterator) {
-      if!(*this == iterator) return  true;
+      
+        return  !(*this == iterator);
+      
     }
     Iterator next_it() {
       if (_node != nullptr) {
@@ -107,20 +113,20 @@ public:
       }
       return *this;
     }
-    Iterator operator++() {
+    Iterator& operator++() {
       if (_node != nullptr) {
         _node = _node->next();
       }
       return *this;
     }
+    T operator*() { return _node->value(); }
   };
-  Iterator begin()const {
+  Iterator begin()  {
     return Iterator(this, head);
   }
-  Iterator end()const {
-    return Iterator(this, tail).next_it();
+  Iterator end()  {
+    return Iterator(this, nullptr);
   }
-
 };
 
 

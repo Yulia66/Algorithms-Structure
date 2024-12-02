@@ -4,13 +4,16 @@
 #include <iostream>
 #include "../lib_Iterator/Iterator.h"
 int main() {
-  TList<int>list;
-  list.push_back(3);
-  list.push_back(36);
-  list.push_back(30);
-  for (auto it = list.begin(); it != list.end(); ++it) {
-    std::cout << *it;
+  TList<int> myList;
+  myList.push_back(1);
+  myList.push_back(2);
+  myList.push_back(3);
+  //myList.print();
+  for (TList<int>::Iterator it = myList.begin(); it != myList.end(); ++it) {
+    std::cout << *it << " ";
   }
+  std::cout << std::endl;
+
   return 0;
 }
 #endif

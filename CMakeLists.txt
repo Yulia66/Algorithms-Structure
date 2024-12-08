@@ -12,6 +12,7 @@ add_subdirectory(lib_Bracket)
 add_subdirectory(lib_SecList)
 add_subdirectory(lib_StackOnList)
 add_subdirectory(lib_Iterator)
+add_subdirectory(lib_Polynom)
 add_subdirectory(lib_Stack)	
 add_subdirectory(lib_Queue )							      # и для создания исполняемого проекта в отдельные функции
 add_subdirectory(lib_List)

@@ -1,4 +1,29 @@
-#define ITERATOR
+#define POLYNOM
+
+
+#ifdef POLYNOM
+#include <iostream>   
+#include <vector>
+#include <windows.h>
+#include <cmath>
+#include <list>
+#include "../lib_Polynom/Polynom.h"
+int main() {
+  // SetConsoleOutputCP(CP_UTF8);
+  Polynom pol("2x^4y^5z^748+2z^5+9y^5z^23");
+  Monom* my = new Monom();
+  //std::cin >> my->_coef>>my->d_x >>  my->d_y >>  my->d_z;
+  Monom monom(1, 1, 0, 0);
+  Monom monom_copy(9, 0, 0, 0);
+  Monom m;
+  m = (monom / monom_copy);
+  // (*my).print();
+  pol.add_monom(monom);
+  pol.print();
+  return 0;
+}
+#endif
+
 
 #ifdef ITERATOR
 #include <iostream>

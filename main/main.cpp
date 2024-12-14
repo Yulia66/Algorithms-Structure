@@ -1,5 +1,36 @@
 #define POLYNOM
+#ifdef LOOP
+#include <iostream>   
+#include "../lib_List/List.h"
+#include "../lib_loop/loop.h"
+int main() {
+  // Создаем список с циклом
+  TNode<int>* head = new TNode<int>(1);
+  head->_next = new TNode<int>(2);
+  head->_next->_next = new TNode<int>(3);
+  head->_next->_next->_next = new TNode<int>(4);
+  head->_next->_next->_next->_next = head->_next; // Создаем цикл
 
+  // Проверяем наличие цикла
+  if (hasCycle(head)) {
+    std::cout << "Список содержит цикл." << std::endl;
+  }
+  else {
+    std::cout << "Список не содержит цикла." << std::endl;
+  }
+
+  // Освобождаем память (удаляем цикл)
+  head->_next->_next->_next->_next = nullptr;
+  delete head->_next->_next->_next;
+  delete head->_next->_next;
+  delete head->_next;
+  delete head;
+
+  return 0;
+}
+
+
+#endif
 
 #ifdef POLYNOM
 #include <iostream>   
@@ -10,15 +41,18 @@
 #include "../lib_Polynom/Polynom.h"
 int main() {
   // SetConsoleOutputCP(CP_UTF8);
-  Polynom pol("2x^4y^5z^748+2z^5+9y^5z^23");
+  Polynom pol("45+2x^4y^5z^748+24x^4y^5z^748+2z^5+45y^78+y^89+9x^6y^5z^23+56+89");
   Monom* my = new Monom();
   //std::cin >> my->_coef>>my->d_x >>  my->d_y >>  my->d_z;
-  Monom monom(1, 1, 0, 0);
-  Monom monom_copy(9, 0, 0, 0);
+  Monom monom(1, 0, 6, 0);
+  Monom monom_copy(9, 0, 6, 0);
   Monom m;
-  m = (monom / monom_copy);
+  m = monom - monom_copy;
+ // m.print();
+ // m = (monom / monom_copy);
   // (*my).print();
   pol.add_monom(monom);
+  pol.sort();
   pol.print();
   return 0;
 }

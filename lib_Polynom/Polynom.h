@@ -4,6 +4,7 @@
 #include <cmath>
 #include <list>
 #include "../lib_List/List.h"
+#include <algorithm>
 
 bool is_number(char symbol) {
   return symbol >= '0' && symbol <= '9';
@@ -52,8 +53,9 @@ public:
     int result_dz = 0;
     
     while (is_number(exp[curr_pos])) {
-      _coef = result_coef * 10 + (exp[curr_pos] - '0');
+      result_coef = result_coef * 10 + (exp[curr_pos] - '0');
       curr_pos++;
+      _coef = result_coef;
     }
     if (exp[curr_pos] == 'x') {
       curr_pos= curr_pos +2;
@@ -122,6 +124,13 @@ public:
       return Monom(_coef + monom._coef, d_x, d_y, d_z);
     }
     throw "Не подобны! ";
+  }
+
+  Monom operator-() {
+    _coef = (-1) * _coef;
+  
+      return *this;
+  
   }
   Monom& operator+=(const Monom& monom) {
     if (*this == monom) {
@@ -213,36 +222,26 @@ public:
       std::cout << std::endl; 
     }  
 
-    void sort() {
-    std::vector<Monom> polynom(_polynom.begin(), _polynom.end());
-     // _polynom.clear();
-
-
-      int coef[100];
-      int x[100];
-      int y[100];
-      int z[100];
-      int i = 0;
-      int count = 0;
-      for (auto it = _polynom.begin(); it != _polynom.end(); ++it,i++) {
-       coef[i]= it->_coef;
-       x[i] = it->d_x;
-       y[i] = it->d_y;
-       z[i] = it->d_z;
-       count++;
-      }
-
-     /* for (int i = 0; i < count - 1; i++) {
-        for (int j = 0; j < count - 1 - i; j++) {
-          if(x[j]>x[j+0])
-          swap
-        }
-      }
-
-      
-
+    static bool compareMonom(const Monom& a, const Monom& b) {
+        if (a.d_x != b.d_x) return a.d_x > b.d_x;
+        if (a.d_y != b.d_y) return a.d_y > b.d_y;
+        if (a.d_z != b.d_z) return a.d_z > b.d_z;
+        if (a._coef != b._coef) return a._coef > b._coef;
+       
     }
-    */
+
+public:
+    void sort() {
+        std::vector<Monom> polynom(_polynom.begin(), _polynom.end());
+        _polynom.clear();
+
+        std::sort(polynom.begin(), polynom.end(), compareMonom);
+
+        for (const auto& monom : polynom) {
+            _polynom.push_back(monom);
+        }
+    }
+    
 
 
     void add_monom(Monom& monom) {

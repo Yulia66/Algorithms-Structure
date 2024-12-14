@@ -5,7 +5,7 @@
 bool is_correct(const std::string& exp) {
   Stack<char> stack;
   for (char ch : exp) {
-    // if
+   
     if (ch == '(' || ch == '{' || ch == '[' || ch == '|') {
       stack.push(ch);
 

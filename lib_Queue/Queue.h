@@ -43,39 +43,31 @@ public:
     else
       return false;
   }
-
+  
   void add_element(int element) {
-    if (ends == SIZE - 1 && front != 0) {
-      ends = 0;
-      items[ends] = element;
-      ends++;
-    }
+   
 
     if (isFull()) {
       throw std::logic_error("The queue is full!!!\n");
     }
     else {
-      if (front == -1) front = 0;
-      ends++;
+      ends = (ends + 1) % SIZE;
       items[ends] = element;
+      
     }
   }
-
-  void delete_element() {
-    int element;
+  
+  int delete_element() {
+    
     if (isEmpty()) {
       throw std::logic_error("The queue is empty!!!\n");
 
     }
     else {
-      element = items[front];
-      if (front >= ends) {
-        front = -1;
-        ends = -1;
-      } 
-      else {
-        front++;
-      }
+      int value = items[front];
+      front = (front + 1) % SIZE;
+      
+      return value;
 
     }
   }

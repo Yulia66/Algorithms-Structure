@@ -1,5 +1,29 @@
 #include <gtest.h>
-#include "../lib_Stack/Stack_.h"
+#include "../lib_HeshMap/HeshMap.h"
+
+
+
+TEST(HeshMap, Hesh_function_string) {
+	Hesh_table<std::string,int> obj;
+	int res = obj.insert("pol", 55);
+	ASSERT_EQ(res, 13);
+}
+/*
+TEST(HeshMap, Hesh_function_throw) {
+	Hesh_table<char, int> obj;
+	ASSERT_THROW(obj.insert('l', 55), std::logic_error);
+
+}
+*/
+
+TEST(HeshMap, Hesh_function_int) {
+	Hesh_table<int, int> obj;
+	int res = obj.insert(65, 55);
+	ASSERT_EQ(res, 10);
+}
+
+
+
 /*
 
 // Тесты

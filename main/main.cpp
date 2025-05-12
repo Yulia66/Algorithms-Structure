@@ -1,4 +1,34 @@
-#define POLYNOM
+#define HESH_MAP
+
+
+#ifdef HESH_MAP
+
+#include <vector>
+#include <list>
+#include <utility>
+#include <stdexcept>
+#include <random>
+#include <optional>
+#include <iostream>
+#include <string>
+#include <type_traits>
+#include "../lib_HeshMap/HeshMap.h"
+
+int main() {
+    Hesh_table<int, int> f;
+    Hesh_table<std::string, int> h;
+    //   f.insert(34, 55);
+    std::cout<<Hesh_function("ned");
+
+    h.insert("pol", 55);
+    h.insert("ned", 56);
+    h.insert("nedo", 58);
+    h.print();
+    return 0;
+}
+
+#endif 
+
 #ifdef LOOP
 #include <iostream>   
 #include "../lib_List/List.h"
@@ -30,7 +60,37 @@ int main() {
 }
 
 
+#endif 
+
+#ifdef LIST_UNSORTED
+#include <iostream>
+#include <vector>
+#include <list>
+#include <utility>
+#include <stdexcept>
+#include <random>
+#include <optional>
+#include "../lib_list_unsorted/List_unsorted.h"
+int main() {
+    sorted<int, int> list;
+    try {
+        list.insert(5,4);
+        list.insert(7, 8);
+        list.insert(6);
+        list.remove(5);
+        list.remove(7);
+     
+        list.print();
+    }
+    catch (const std::logic_error& e) {
+        std::cerr << e.what();
+    }
+    return 0;
+}
+
+
 #endif
+
 
 #ifdef POLYNOM
 #include <iostream>   

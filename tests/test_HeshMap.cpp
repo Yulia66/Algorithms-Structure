@@ -1,73 +1,42 @@
 #include <gtest.h>
 #include "../lib_HeshMap/HeshMap.h"
 
+TEST(LinkTest, InsertAndPrint) {
+    Link<std::string, int> link;
+    link.insert("key1", 1);
+    link.insert("key2", 2);
 
-
-TEST(HeshMap, Hesh_function_string) {
-	Hesh_table<std::string,int> obj;
-	int res = obj.insert("pol", 55);
-	ASSERT_EQ(res, 13);
-}
-/*
-TEST(HeshMap, Hesh_function_throw) {
-	Hesh_table<char, int> obj;
-	ASSERT_THROW(obj.insert('l', 55), std::logic_error);
-
-}
-*/
-
-TEST(HeshMap, Hesh_function_int) {
-	Hesh_table<int, int> obj;
-	int res = obj.insert(65, 55);
-	ASSERT_EQ(res, 10);
+    testing::internal::CaptureStdout();
+    link.print_chain();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_NE(output.find("Key: key1, Value: 1"), std::string::npos);
+    EXPECT_NE(output.find("Key: key2, Value: 2"), std::string::npos);
 }
 
+TEST(HeshTableTest, InsertAndPrint) {
+    Hesh_table<std::string, int> table;
+    table.insert("key1", 1);
+    table.insert("key2", 2);
 
-
-/*
-
-// Тесты
-TEST(StackLib, initialization_constructor) {
-  Stack<int> obj;
-
-  ASSERT_EQ(obj.get_capacity(), 5);
-  ASSERT_TRUE(obj.isEmpty());
+    testing::internal::CaptureStdout();
+    table.print();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_NE(output.find("Key: key1, Value: 1"), std::string::npos);
+    EXPECT_NE(output.find("Key: key2, Value: 2"), std::string::npos);
 }
 
-TEST(StackLib, push_and_pop) {
-  Stack<int> obj;
-
-  obj.push(10);
-  ASSERT_EQ(obj.size(), 1);
-  ASSERT_FALSE(obj.isEmpty());
-  ASSERT_EQ(obj.peek(), 10);
-
-  obj.push(20);
-  ASSERT_EQ(obj.size(), 2);
-  ASSERT_EQ(obj.peek(), 20);
-
-  ASSERT_EQ(obj.pop(), 20);
-  ASSERT_EQ(obj.size(), 1);
+TEST(HeshTableTest, InsertWithCollision) {
+    Hesh_table<int, int> table;
+    int index1 = table.insert(1, 100);
+    int index2 = table.insert(1 + CAPACITY, 200); 
+    EXPECT_EQ(index1, index2);
+    testing::internal::CaptureStdout();
+    table.print();
+    std::string output = testing::internal::GetCapturedStdout();
+    EXPECT_NE(output.find("Key: 1, Value: 100"), std::string::npos);
+    EXPECT_NE(output.find("Key: 51, Value: 200"), std::string::npos);
 }
 
-TEST(StackLib, overflow) {
-  Stack<int> obj(2); 
-
-  obj.push(10);
-  obj.push(20);
-
-  ASSERT_THROW(obj.push(30), std::logic_error); // Ожидаем исключение
+TEST(HeshTableTest, UnsupportedKeyType) {
+    EXPECT_THROW(Hesh_function(3.14), std::logic_error);
 }
-
-TEST(StackLib, underflow) {
-  Stack<int> obj;
-
-  ASSERT_THROW(obj.pop(), std::logic_error); // Ожидаем исключение
-}
-
-TEST(StackLib, peek_on_empty_stack) {
-  Stack<int> obj;
-
-  ASSERT_THROW(obj.peek(), std::logic_error); // Ожидаем исключение
-}
-*/

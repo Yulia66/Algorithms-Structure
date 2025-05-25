@@ -15,10 +15,12 @@ add_subdirectory(lib_StackOnList)
 add_subdirectory(lib_Iterator)
 add_subdirectory(lib_Polynom)
 add_subdirectory(lib_Polish)
+add_subdirectory(lib_Btree)
 add_subdirectory(lib_list_unsorted)
 add_subdirectory(lib_mas_unsorted)
 add_subdirectory(lib_mas_sorted)
 add_subdirectory(lib_HeshMap)
+
 add_subdirectory(lib_Stack)	
 add_subdirectory(lib_Queue )							      # и для создания исполняемого проекта в отдельные функции
 add_subdirectory(lib_List)

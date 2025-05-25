@@ -1,6 +1,33 @@
 #define HESH_MAP
 
 
+
+
+#ifdef BTREE
+
+#include <iostream>
+#include "../lib_Btree/Btree.h"
+
+int main() {
+    BTreeNode<int>* root = nullptr;
+    root = root->insert(root, 1);
+    root = root->insert(root, 6);
+    root = root->insert(root, 3);
+    root = root->insert(root, 4);
+    root = root->insert(root, 2);
+    root->print(root);
+    //root = root->erase(root, 3);
+   // root->clear();
+    /*try {
+        root->print(root);
+    }
+    catch (const std::logic_error& e) {
+        std::cerr << e.what();
+    }*/
+    return 0;
+}
+#endif 
+
 #ifdef HESH_MAP
 
 #include <vector>
@@ -18,12 +45,16 @@ int main() {
     Hesh_table<int, int> f;
     Hesh_table<std::string, int> h;
     //   f.insert(34, 55);
-    std::cout<<Hesh_function("ned");
-
-    h.insert("pol", 55);
-    h.insert("ned", 56);
-    h.insert("nedo", 58);
-    h.print();
+    //std::cout<<Hesh_function("ned");
+    try {
+        h.insert("pol", 55);
+        h.insert("ned", 56);
+        h.insert("nedo", 58);
+        h.print();
+    }
+    catch (const std::logic_error& e) {
+        std::cerr << e.what();
+    }
     return 0;
 }
 
